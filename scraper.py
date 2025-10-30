@@ -17,6 +17,8 @@ def extract_next_links(url, resp):
     #         resp.raw_response.url: the url, again
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
+
+    # Return empty if no response
     if resp.status != 200 or resp.raw_response is None:
         return []
     
@@ -25,10 +27,8 @@ def extract_next_links(url, resp):
 
     for tag in soup.find_all("a", href=True):
         href = tag['href']
-        # Resolve relative URLs
-        abs_url = urljoin(resp.url, href)
-        # Remove fragment (e.g. #section)
-        abs_url, _ = urldefrag(abs_url)
+        abs_url = urljoin(resp.url, href)       # Resolve relative URLs
+        abs_url, _ = urldefrag(abs_url)         # Remove fragments (e.g. #section)
         links.append(abs_url)
 
     return links
