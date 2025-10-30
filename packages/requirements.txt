@@ -1,2 +1,3 @@
 cbor
+bs4
 requests
