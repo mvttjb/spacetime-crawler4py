@@ -14,7 +14,12 @@ global_word_counter = Counter()
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
-    return [link for link in links if is_valid(link)]
+    valid_links = [link for link in links if is_valid(link)]
+
+    if resp.status == 200 and resp.raw_response:
+        read_page(url, resp)
+
+    return valid_links
 
 def extract_next_links(url, resp):
     # Implementation required.
@@ -97,10 +102,8 @@ def read_page(url, resp):
     # Update global word counter for most common words
     global_word_counter.update(words)
 
-    print(f"Analyzed {url} ({word_count} words)")
-
 def save_report(filename="crawler_report.json"):
-    
+
     data = {
         "longest_page": longest_page,
         "num_unique_pages": len(page_word_counts),
