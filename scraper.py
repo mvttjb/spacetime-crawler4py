@@ -1,6 +1,15 @@
-import re
 from bs4 import BeautifulSoup
+from collections import defaultdict, Counter
+import json
+import re
 from urllib.parse import urljoin, urlparse, urldefrag
+
+
+# Statistics for Report
+page_word_counts = {}
+subdomain_counter = defaultdict(int)
+longest_page = ("", 0)
+global_word_counter = Counter()
 
 
 def scraper(url, resp):
@@ -61,3 +70,44 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def read_page(url, resp):
+
+    global longest_page
+
+    soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+    text = soup.get_text(separator=" ", strip=True)
+
+    # Cleanup and word splitting
+    words = re.findall(r"[a-zA-Z]+", text.lower())
+    word_count = len(words)
+
+    # Update per-page word count
+    page_word_counts[url] = word_count
+
+    # Track subdomain frequency
+    parsed = urlparse(url)
+    subdomain = parsed.netloc.lower()
+    subdomain_counter[subdomain] += 1
+
+    # Track longest page
+    if word_count > longest_page[1]:
+        longest_page = (url, word_count)
+
+    # Update global word counter for most common words
+    global_word_counter.update(words)
+
+    print(f"Analyzed {url} ({word_count} words)")
+
+def save_report(filename="crawler_report.json"):
+    
+    data = {
+        "longest_page": longest_page,
+        "num_unique_pages": len(page_word_counts),
+        "unique_subdomains": len(subdomain_counter),
+        "subdomain_counts": dict(subdomain_counter),
+        "top_50_words": global_word_counter.most_common(50)
+    }
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)
+    print(f"[SAVED] Report written to {filename}")
