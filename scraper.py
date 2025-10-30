@@ -19,7 +19,6 @@ def scraper(url, resp):
     if resp.status == 200 and resp.raw_response:
         read_page(url, resp)
 
-    save_report()
     return valid_links
 
 def extract_next_links(url, resp):
