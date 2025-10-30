@@ -19,6 +19,7 @@ def scraper(url, resp):
     if resp.status == 200 and resp.raw_response:
         read_page(url, resp)
 
+    save_report()
     return valid_links
 
 def extract_next_links(url, resp):
@@ -39,6 +40,7 @@ def extract_next_links(url, resp):
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     links = []
 
+    # Extract next links
     for tag in soup.find_all("a", href=True):
         href = tag['href']
         abs_url = urljoin(resp.url, href)       # Resolve relative URLs
