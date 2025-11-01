@@ -71,7 +71,9 @@ def is_valid(url):
             "tribe",
             "~eppstein/pix",
             "isg.ics.uci.edu/events",
-            "doku.php"
+            "doku.php",
+            "grape",
+            "fano.ics.uci.edu/ca/rules/"
         ]
         if any(t in url.lower() for t in trap_patterns):
             print(f"[TRAP SKIPPED] {url}")      # Print for observation
@@ -126,7 +128,9 @@ def read_page(url, resp):
     global_word_counter.update(words)
 
     # Save report at the end of reading page
-    save_report()
+    # Only after every 50 pages to minimize disk I/O
+    if len(page_word_counts) % 50 == 0:
+        save_report("crawler_report.json")
 
 def save_report(filename="crawler_report.json"):
 
