@@ -40,6 +40,12 @@ def extract_next_links(url, resp):
     if len(resp.raw_response.content) > 10000000:
         return []
     
+    # Skip if not HTML content
+    # Needed a second filter due to some non-accepted file types coming through
+    content_type = resp.raw_response.headers.get("Content-Type", "").lower()
+    if "text/html" not in content_type:
+        return []
+    
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     text = soup.get_text(separator=" ", strip=True)
     links = []
@@ -133,7 +139,7 @@ def read_page(url, resp):
     word_count = len(words)
 
     # Skip empty or nearly empty pages
-    if word_count < 100:
+    if word_count < 100 or word_count > 10000000:
         return
 
     # Update per-page word count
