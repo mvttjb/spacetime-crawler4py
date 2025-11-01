@@ -16,8 +16,8 @@ def scraper(url, resp):
     links = extract_next_links(url, resp)
     valid_links = [link for link in links if is_valid(link)]
 
-    # if resp.status == 200 and resp.raw_response:
-    #     read_page(url, resp)
+    if resp.status == 200 and resp.raw_response:
+        read_page(url, resp)
 
     return valid_links
 
@@ -62,7 +62,22 @@ def is_valid(url):
         allowed_domains = ["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]
         if not any(domain.endswith(d) for d in allowed_domains):
             return False
+        
+        # Observable crawler traps (Hard code to avoid)
+        trap_patterns = [
+            "wics.ics.uci.edu",
+            "ngs.ics.uci.edu",
+            "ical",
+            "tribe",
+            "~eppstein/pix",
+            "isg.ics.uci.edu/events",
+            "doku.php"
+        ]
+        if any(t in url.lower() for t in trap_patterns):
+            print(f"[TRAP SKIPPED] {url}")      # Print for observation
+            return False
 
+        # File type filters (Skipping Non-HTML Pages)
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -75,6 +90,10 @@ def is_valid(url):
 
     except TypeError:
         print ("TypeError for ", parsed)
+        raise
+
+    except ValueError:
+        print ("ValueError for ", parsed)
         raise
 
 def read_page(url, resp):
@@ -106,6 +125,9 @@ def read_page(url, resp):
     # Update global word counter for most common words
     global_word_counter.update(words)
 
+    # Save report at the end of reading page
+    save_report()
+
 def save_report(filename="crawler_report.json"):
 
     # Call when wanting to save a new report
@@ -120,4 +142,3 @@ def save_report(filename="crawler_report.json"):
     }
     with open(filename, "w") as f:
         json.dump(data, f, indent=2)
-    print(f"[SAVED] Report written to {filename}")
