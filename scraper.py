@@ -32,12 +32,23 @@ def extract_next_links(url, resp):
     #         resp.raw_response.content: the content of the page!
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
 
-    # Return empty if no response
+    # Skip dead or empty responses
     if resp.status != 200 or resp.raw_response is None:
         return []
     
+    # Skip pages that are abnormally large
+    if len(resp.raw_response.content) > 10000000:
+        print(f"[SKIPPED LARGE FILE] {url}")
+        return []
+    
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+    text = soup.get_text(separator=" ", strip=True)
     links = []
+
+    # Skip pages with almost no text
+    if len(text.split()) < 100:
+        print(f"[SKIPPED LOW-TEXT PAGE] {url}")
+        return []
 
     # Extract next links
     for tag in soup.find_all("a", href=True):
@@ -54,12 +65,19 @@ def is_valid(url):
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
+
+        # Only allow HTTP/HTTPS schemes
         if parsed.scheme not in set(["http", "https"]):
             return False
         
-        # Do not crawl if it is not a valid domain
+        # Restrict crawling to allowed domains
         domain = parsed.netloc.lower()
-        allowed_domains = ["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]
+        allowed_domains = [
+            "ics.uci.edu", 
+            "cs.uci.edu", 
+            "informatics.uci.edu", 
+            "stat.uci.edu"
+        ]
         if not any(domain.endswith(d) for d in allowed_domains):
             return False
         
@@ -67,16 +85,20 @@ def is_valid(url):
         trap_patterns = [
             "wics.ics.uci.edu",
             "ngs.ics.uci.edu",
-            "ical",
-            "tribe",
+            "ical", "tribe", "calendar",
             "~eppstein/pix",
             "isg.ics.uci.edu/events",
-            "doku.php",
-            "grape",
+            "doku.php", "grape",
             "fano.ics.uci.edu/ca/rules/"
         ]
         if any(t in url.lower() for t in trap_patterns):
             print(f"[TRAP SKIPPED] {url}")      # Print for observation
+            return False
+        
+        # Avoid calendar/date loops or page traps (Through Regex)
+        if re.search(r"(\?|&)page=\d+", url):
+            return False
+        if re.search(r"(\?|&)month=\d+", url):
             return False
 
         # File type filters (Skipping Non-HTML Pages)
@@ -111,6 +133,10 @@ def read_page(url, resp):
     # Cleanup and word splitting
     words = re.findall(r"[a-zA-Z]+", text.lower())
     word_count = len(words)
+
+    # Skip empty or nearly empty pages
+    if word_count < 100:
+        return
 
     # Update per-page word count
     page_word_counts[url] = word_count
