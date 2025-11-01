@@ -178,3 +178,4 @@ def save_report(filename="crawler_report.json"):
     }
     with open(filename, "w") as f:
         json.dump(data, f, indent=2)
+    
