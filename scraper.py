@@ -94,7 +94,8 @@ def is_valid(url):
             "isg.ics.uci.edu/events",
             "doku.php", "grape",
             "fano.ics.uci.edu/ca/rules/",
-            "?filter", "%7Emajumder"
+            "?filter", "%7Emajumder",
+            "ArchManager.apk"
         ]
         if any(t in url.lower() for t in trap_patterns):
             return False
