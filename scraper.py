@@ -36,18 +36,16 @@ def extract_next_links(url, resp):
     if resp.status != 200 or resp.raw_response is None:
         return []
     
-    # Skip pages that are abnormally large
+    # Skip pages that are too large
     if len(resp.raw_response.content) > 10000000:
-        print(f"[SKIPPED LARGE FILE] {url}")
         return []
     
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     text = soup.get_text(separator=" ", strip=True)
     links = []
 
-    # Skip pages with almost no text
+    # Skip pages that are too small
     if len(text.split()) < 100:
-        print(f"[SKIPPED LOW-TEXT PAGE] {url}")
         return []
 
     # Extract next links
@@ -81,21 +79,21 @@ def is_valid(url):
         if not any(domain.endswith(d) for d in allowed_domains):
             return False
         
-        # Observable crawler traps (Hard code to avoid)
+        # Observable crawler traps / avoidances
         trap_patterns = [
             "wics.ics.uci.edu",
             "ngs.ics.uci.edu",
-            "ical", "tribe", "calendar",
+            "?ical", "tribe", "calendar",
             "~eppstein/pix",
             "isg.ics.uci.edu/events",
             "doku.php", "grape",
-            "fano.ics.uci.edu/ca/rules/"
+            "fano.ics.uci.edu/ca/rules/",
+            "?filter"
         ]
         if any(t in url.lower() for t in trap_patterns):
-            print(f"[TRAP SKIPPED] {url}")      # Print for observation
             return False
         
-        # Avoid calendar/date loops or page traps (Through Regex)
+        # Avoid calendar/date loops or page loops (Through Regex)
         if re.search(r"(\?|&)page=\d+", url):
             return False
         if re.search(r"(\?|&)month=\d+", url):
@@ -151,7 +149,14 @@ def read_page(url, resp):
         longest_page = (url, word_count)
 
     # Update global word counter for most common words
-    global_word_counter.update(words)
+    # Ignore all stop words!
+    STOP_WORDS = {
+        "a","about","above","after","again","against","all","am","an","and","any", "are","as","at","be","because","been","before","being","below","between",
+        "both","but","by","could","did","do","does","doing","down","during","each", "few","for","from","further","had","has","have","having","he","her","here","hers","herself","him","himself","his","how","i","if","in","into","is", "it","its","itself","just","me","more","most","my","myself","no","nor", "not","now","of","off",
+        "on","once","only","or","other","our","ours","ourselves","out","over","own","s","same","she","should","so","some","such", "than","that","the","their","theirs","them","themselves","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who",
+        "whom","why","with","would","you","your","yours","yourself","yourselves"
+    }
+    global_word_counter.update(w for w in words if w not in STOP_WORDS)
 
     # Save report at the end of reading page
     # Only after every 50 pages to minimize disk I/O
