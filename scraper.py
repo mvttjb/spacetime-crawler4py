@@ -5,7 +5,7 @@ import re
 from urllib.parse import urljoin, urlparse, urldefrag
 
 
-# Statistics for Report
+# Statistics for Report (Using collections library)
 page_word_counts = {}
 subdomain_counter = defaultdict(int)
 longest_page = ("", 0)
@@ -16,8 +16,8 @@ def scraper(url, resp):
     links = extract_next_links(url, resp)
     valid_links = [link for link in links if is_valid(link)]
 
-    if resp.status == 200 and resp.raw_response:
-        read_page(url, resp)
+    # if resp.status == 200 and resp.raw_response:
+    #     read_page(url, resp)
 
     return valid_links
 
@@ -78,6 +78,9 @@ def is_valid(url):
         raise
 
 def read_page(url, resp):
+    # Helper function for analyzing valid pages
+    # Uses BeautifulSoup package for simplicity
+    # Updates statistics for report
 
     global longest_page
 
@@ -104,6 +107,9 @@ def read_page(url, resp):
     global_word_counter.update(words)
 
 def save_report(filename="crawler_report.json"):
+
+    # Call when wanting to save a new report
+    # Saves into a new / existing JSON file
 
     data = {
         "longest_page": longest_page,
