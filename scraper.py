@@ -16,6 +16,7 @@ def scraper(url, resp):
     links = extract_next_links(url, resp)
     valid_links = [link for link in links if is_valid(link)]
 
+    # Read page for analysis
     if resp.status == 200 and resp.raw_response:
         read_page(url, resp)
 
@@ -36,7 +37,7 @@ def extract_next_links(url, resp):
     if resp.status != 200 or resp.raw_response is None:
         return []
     
-    # Skip pages that are too large
+    # Skip pages that are too large (suspicious)
     if len(resp.raw_response.content) > 10000:
         return []
     
@@ -46,6 +47,7 @@ def extract_next_links(url, resp):
     if "text/html" not in content_type:
         return []
     
+    # Parse page
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     text = soup.get_text(separator=" ", strip=True)
     links = []
@@ -70,11 +72,11 @@ def is_valid(url):
     try:
         parsed = urlparse(url)
 
-        # Only allow HTTP/HTTPS schemes
+        # Only allow HTTP/HTTPS schemes to be valid
         if parsed.scheme not in set(["http", "https"]):
             return False
         
-        # Restrict crawling to allowed domains
+        # Restrict crawling to only these allowed domains
         domain = parsed.netloc.lower()
         allowed_domains = [
             "ics.uci.edu", 
@@ -86,6 +88,7 @@ def is_valid(url):
             return False
         
         # Observable crawler traps / avoidances
+        # Very random, I have only placed patterns that I personally have noticed
         trap_patterns = [
             "wics.ics.uci.edu",
             "ngs.ics.uci.edu",
@@ -100,14 +103,14 @@ def is_valid(url):
         if any(t in url.lower() for t in trap_patterns):
             return False
         
-        # Avoid calendar/date loops or page loops (Through Regex)
+        # Avoid calendar/date loops or page loops (Regex)
         if re.search(r"(\?|&)page=\d+", url):
             return False
         if re.search(r"(\?|&)month=\d+", url):
             return False
 
         # File type filters (Skipping Non-HTML Pages)
-        # Added more to the base filters to bypass many different files
+        # Added more to the previous filters to bypass many different (and possibly corrupted) files
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4|m4a|aac"
@@ -134,19 +137,19 @@ def is_valid(url):
 
 def read_page(url, resp):
     # Helper function for analyzing valid pages
-    # Uses BeautifulSoup package for simplicity
+    # Uses BeautifulSoup package for assistance with parsing
     # Updates statistics for report
-
     global longest_page
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     text = soup.get_text(separator=" ", strip=True)
 
     # Cleanup and word splitting
+    # Only words over 2 characters (not considering words in this crawler, instances of "cc" or "dd", etc.)
     words = re.findall(r"[a-zA-Z]{2,}", text.lower())
     word_count = len(words)
 
-    # Skip empty or nearly empty pages
+    # Skip empty or nearly empty pages, or too large (suspicious)
     if word_count < 100 or word_count > 10000:
         return
 
@@ -168,8 +171,7 @@ def read_page(url, resp):
         "a","about","above","after","again","against","all","am","an","and","any", "are","as","at","be","because","been","before","being","below","between",
         "both","but","by","could","d","did","do","does","doing","down","during","each", "few","for","from","further","had","has","have","having","he","her","here","hers","herself","him","himself","his","how","if","in","into","is", "it","its","itself","just","me","more","most","my","myself","no","nor", "not","now","of","off",
         "on","once","only","or","other","our","ours","ourselves","out","over","own","s","same","she","should","so","some","such", "than","that","the","their","theirs","them","themselves","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who",
-        "whom","why","with","would","you","your","yours","yourself","yourselves","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x",
-        "y","z"
+        "whom","why","with","would","you","your","yours","yourself","yourselves"
     }
     global_word_counter.update(w for w in words if w not in STOP_WORDS)
 
@@ -179,10 +181,10 @@ def read_page(url, resp):
         save_report("crawler_report.json")
 
 def save_report(filename="crawler_report.json"):
-
-    # Call when wanting to save a new report
+    # Helper function when wanting to save a new report
     # Saves into a new / existing JSON file
-
+    # For report, and useful for analyzing crawler behavior
+    # WARNING: Report is wiped after every launch of the crawler
     data = {
         "longest_page": longest_page,
         "num_unique_pages": len(page_word_counts),
