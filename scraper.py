@@ -109,14 +109,19 @@ def is_valid(url):
         # File type filters (Skipping Non-HTML Pages)
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
-            + r"|png|tiff?|mid|mp2|mp3|mp4"
-            + r"|wav|avi|mov|mpeg|mpg|ram|m4v|mkv|ogg|ogv|pdf"
-            + r"|pptm|pps|ppsx|ppt|pptx|"
-            + r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
-            + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-            + r"|epub|dll|cnf|tgz|sha1"
-            + r"|thmx|mso|arff|rtf|jar|csv|apk"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+            + r"|png|tiff?|mid|mp2|mp3|mp4|m4a|aac"
+            + r"|wav|avi|mov|mpeg|mpg|ram|m4v|mkv|ogg|ogv|webm|flv|flac"
+            + r"|pdf|ps|eps|tex|ppt|pptx|pptm|pps|ppsx"
+            + r"|doc|docx|odt|xls|xlsx|ods|csv|tsv"
+            + r"|epub|rtf|arff|jar|apk|exe|dll|bin|so|msi"
+            + r"|bz2|gz|tar|tgz|zip|rar|7z|xz|dmg|iso|img"
+            + r"|psd|ai|indd|xcf"
+            + r"|swf|wmv|wma|rm|smil"
+            + r"|sha1|cnf|cfg|bak|tmp|log"
+            + r"|names|data|dat|thmx|mso"
+            + r"|h5|pkl|npy|npz|rdata|mat"
+            + r"|ics|ical|vcf|vcard)$", parsed.path.lower()
+        )
 
     except TypeError:
         print ("TypeError for ", parsed)
