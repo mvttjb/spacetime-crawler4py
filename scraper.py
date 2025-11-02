@@ -37,7 +37,7 @@ def extract_next_links(url, resp):
         return []
     
     # Skip pages that are too large
-    if len(resp.raw_response.content) > 1000000:
+    if len(resp.raw_response.content) > 100000:
         return []
     
     # Skip if not HTML content
@@ -95,7 +95,7 @@ def is_valid(url):
             "doku.php", "grape",
             "fano.ics.uci.edu/ca/rules/",
             "?filter", "%7Emajumder",
-            "ArchManager.apk"
+            "ArchManager.apk", "randomSmiles"
         ]
         if any(t in url.lower() for t in trap_patterns):
             return False
@@ -141,7 +141,7 @@ def read_page(url, resp):
     word_count = len(words)
 
     # Skip empty or nearly empty pages
-    if word_count < 100 or word_count > 1000000:
+    if word_count < 100 or word_count > 100000:
         return
 
     # Update per-page word count
