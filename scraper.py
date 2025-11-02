@@ -37,7 +37,7 @@ def extract_next_links(url, resp):
         return []
     
     # Skip pages that are too large
-    if len(resp.raw_response.content) > 100000:
+    if len(resp.raw_response.content) > 10000:
         return []
     
     # Skip if not HTML content
@@ -107,6 +107,7 @@ def is_valid(url):
             return False
 
         # File type filters (Skipping Non-HTML Pages)
+        # Added more to the base filters to bypass many different files
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4|m4a|aac"
@@ -146,7 +147,7 @@ def read_page(url, resp):
     word_count = len(words)
 
     # Skip empty or nearly empty pages
-    if word_count < 100 or word_count > 100000:
+    if word_count < 100 or word_count > 10000:
         return
 
     # Update per-page word count
