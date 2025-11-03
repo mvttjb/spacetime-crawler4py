@@ -157,7 +157,7 @@ def read_page(url, resp):
     word_count = len(words)
 
     # Skip empty, nearly empty pages or too large (suspicious & possibly corrupted)
-    if word_count < 100 or word_count > 100000:
+    if word_count < 100 or word_count > 10000:
         return
 
     # Update per-page word count
