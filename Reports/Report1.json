@@ -1,0 +1,313 @@
+{
+  "longest_page": [
+    "https://duttgroup.ics.uci.edu/projects/self-aware-adaptive-computing/mars",
+    9953
+  ],
+  "num_unique_pages": 7700,
+  "unique_subdomains": 101,
+  "subdomain_counts": {
+    "www.stat.uci.edu": 270,
+    "ics.uci.edu": 1144,
+    "cs.uci.edu": 2,
+    "cs.ics.uci.edu": 12,
+    "isg.ics.uci.edu": 257,
+    "www.ics.uci.edu": 1998,
+    "mcs.ics.uci.edu": 12,
+    "code.ics.uci.edu": 14,
+    "mhcid.ics.uci.edu": 20,
+    "accessibility.ics.uci.edu": 5,
+    "www.informatics.uci.edu": 1179,
+    "dgillen.ics.uci.edu": 25,
+    "informatics.uci.edu": 3,
+    "wiki.ics.uci.edu": 1,
+    "www.nacs.uci.edu": 3,
+    "courselisting.ics.uci.edu": 5,
+    "summeracademy.ics.uci.edu": 4,
+    "insite.ics.uci.edu": 9,
+    "tad.ics.uci.edu": 2,
+    "hai.ics.uci.edu": 6,
+    "seal.ics.uci.edu": 47,
+    "www.informatics.ics.uci.edu": 1,
+    "archive.ics.uci.edu": 199,
+    "mover.ics.uci.edu": 23,
+    "frost.ics.uci.edu": 1,
+    "statistics-stage.ics.uci.edu": 10,
+    "vision.ics.uci.edu": 185,
+    "acoi.ics.uci.edu": 119,
+    "sherlock.ics.uci.edu": 4,
+    "flamingo.ics.uci.edu": 11,
+    "psearch.ics.uci.edu": 1,
+    "fr.ics.uci.edu": 2,
+    "emj.ics.uci.edu": 41,
+    "www-db.ics.uci.edu": 10,
+    "nalini.ics.uci.edu": 3,
+    "luci.ics.uci.edu": 3,
+    "www.cecs.uci.edu": 30,
+    "cert.ics.uci.edu": 12,
+    "www.physics.uci.edu": 559,
+    "physics.uci.edu": 438,
+    "jdsylab.physics.uci.edu": 14,
+    "duttgroup.ics.uci.edu": 110,
+    "iasl.ics.uci.edu": 1,
+    "xtune.ics.uci.edu": 2,
+    "dynamo.ics.uci.edu": 4,
+    "studentcouncil.ics.uci.edu": 7,
+    "computableplant.ics.uci.edu": 38,
+    "circadiomics.ics.uci.edu": 4,
+    "cybert.ics.uci.edu": 26,
+    "motifmap.ics.uci.edu": 2,
+    "scratch.proteomics.ics.uci.edu": 4,
+    "mupro.proteomics.ics.uci.edu": 3,
+    "selectpro.proteomics.ics.uci.edu": 6,
+    "betapro.proteomics.ics.uci.edu": 3,
+    "cdb.ics.uci.edu": 25,
+    "chemdb.ics.uci.edu": 24,
+    "mlphysics.ics.uci.edu": 1,
+    "cml.ics.uci.edu": 262,
+    "mailman.ics.uci.edu": 34,
+    "newport.eecs.uci.edu": 1,
+    "www.eecs.uci.edu": 1,
+    "radicle.ics.uci.edu": 4,
+    "asterix.ics.uci.edu": 6,
+    "graphmod.ics.uci.edu": 1,
+    "statconsulting.ics.uci.edu": 4,
+    "www.cs.uci.edu": 7,
+    "ds4all.ics.uci.edu": 5,
+    "cloudberry.ics.uci.edu": 26,
+    "ipubmed.ics.uci.edu": 1,
+    "create.ics.uci.edu": 7,
+    "mdogucu.ics.uci.edu": 1,
+    "futurehealth.ics.uci.edu": 166,
+    "unite.ics.uci.edu": 9,
+    "malek.ics.uci.edu": 1,
+    "redmiles.ics.uci.edu": 1,
+    "mswe.ics.uci.edu": 11,
+    "cyberclub.ics.uci.edu": 7,
+    "chenli.ics.uci.edu": 9,
+    "tastier.ics.uci.edu": 1,
+    "hobbes.ics.uci.edu": 9,
+    "icde2023.ics.uci.edu": 45,
+    "graphics.ics.uci.edu": 4,
+    "stat.uci.edu": 2,
+    "stat.ics.uci.edu": 11,
+    "jgarcia.ics.uci.edu": 17,
+    "evoke.ics.uci.edu": 2,
+    "student-council.ics.uci.edu": 7,
+    "stairs.ics.uci.edu": 3,
+    "informatics.ics.uci.edu": 2,
+    "riscit.ics.uci.edu": 3,
+    "edgelab.ics.uci.edu": 4,
+    "hpi.ics.uci.edu": 5,
+    "plrg.ics.uci.edu": 16,
+    "plrg.eecs.uci.edu": 10,
+    "demsky.eecs.uci.edu": 1,
+    "capstone.cs.uci.edu": 8,
+    "industryshowcase.ics.uci.edu": 23,
+    "tutoring.ics.uci.edu": 5,
+    "oai.ics.uci.edu": 5,
+    "mds.ics.uci.edu": 8,
+    "www.economics.uci.edu": 1
+  },
+  "top_50_words": [
+    [
+      "research",
+      39137
+    ],
+    [
+      "student",
+      27261
+    ],
+    [
+      "uci",
+      25007
+    ],
+    [
+      "ics",
+      23178
+    ],
+    [
+      "graduate",
+      21907
+    ],
+    [
+      "computer",
+      20480
+    ],
+    [
+      "undergraduate",
+      20041
+    ],
+    [
+      "science",
+      18722
+    ],
+    [
+      "data",
+      17854
+    ],
+    [
+      "software",
+      17128
+    ],
+    [
+      "informatics",
+      16701
+    ],
+    [
+      "irvine",
+      15608
+    ],
+    [
+      "news",
+      15550
+    ],
+    [
+      "learning",
+      15518
+    ],
+    [
+      "students",
+      15396
+    ],
+    [
+      "department",
+      15371
+    ],
+    [
+      "information",
+      15041
+    ],
+    [
+      "faculty",
+      14633
+    ],
+    [
+      "engineering",
+      14389
+    ],
+    [
+      "may",
+      13967
+    ],
+    [
+      "physics",
+      13725
+    ],
+    [
+      "us",
+      13570
+    ],
+    [
+      "university",
+      12739
+    ],
+    [
+      "september",
+      12000
+    ],
+    [
+      "june",
+      11922
+    ],
+    [
+      "uc",
+      11666
+    ],
+    [
+      "july",
+      11645
+    ],
+    [
+      "can",
+      11570
+    ],
+    [
+      "august",
+      10977
+    ],
+    [
+      "ph",
+      10748
+    ],
+    [
+      "january",
+      10597
+    ],
+    [
+      "march",
+      10577
+    ],
+    [
+      "april",
+      10473
+    ],
+    [
+      "november",
+      10417
+    ],
+    [
+      "will",
+      10358
+    ],
+    [
+      "october",
+      10330
+    ],
+    [
+      "alumni",
+      10266
+    ],
+    [
+      "february",
+      10242
+    ],
+    [
+      "december",
+      10187
+    ],
+    [
+      "design",
+      10060
+    ],
+    [
+      "events",
+      10018
+    ],
+    [
+      "projects",
+      9787
+    ],
+    [
+      "community",
+      9706
+    ],
+    [
+      "systems",
+      9691
+    ],
+    [
+      "people",
+      9586
+    ],
+    [
+      "courses",
+      9257
+    ],
+    [
+      "contact",
+      9237
+    ],
+    [
+      "school",
+      9192
+    ],
+    [
+      "markellekelly",
+      9135
+    ],
+    [
+      "home",
+      9028
+    ]
+  ]
+}

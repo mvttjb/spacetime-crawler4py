@@ -37,8 +37,8 @@ def extract_next_links(url, resp):
     if resp.status != 200 or resp.raw_response is None:
         return []
     
-    # Skip pages that are too large (suspicious)
-    if len(resp.raw_response.content) > 10000000:
+    # Skip pages that are too large (suspicious) [Current Limit: 5 MB]
+    if len(resp.raw_response.content) > 5000000:
         return []
     
     # Skip if not HTML content
@@ -78,13 +78,17 @@ def is_valid(url):
         
         # Restrict crawling to only these allowed domains
         domain = parsed.netloc.lower()
+        # Ignore www instances (for domain checker later)
+        if domain.startswith("www."):
+            domain = domain[4:] 
+
         allowed_domains = [
             "ics.uci.edu", 
             "cs.uci.edu", 
             "informatics.uci.edu", 
             "stat.uci.edu"
         ]
-        if not any(domain.endswith(d) for d in allowed_domains):
+        if not any(domain == d or domain.endswith("." + d) for d in allowed_domains):
             return False
         
         # Observable crawler traps / avoidances
@@ -94,6 +98,9 @@ def is_valid(url):
             "ngs.ics.uci.edu",
             "?ical", "tribe", "calendar",
             "~eppstein/pix",
+            "economics.uci.edu",
+            "eecs.uci.edu", "nacs.uci.edu",
+            "physics.uci.edu", "cecs.uci.edu"
             "isg.ics.uci.edu/events",
             "doku.php", "grape",
             "fano.ics.uci.edu/ca/rules/",
@@ -149,8 +156,8 @@ def read_page(url, resp):
     words = re.findall(r"[a-zA-Z]{2,}", text.lower())
     word_count = len(words)
 
-    # Skip empty or nearly empty pages, or too large (suspicious)
-    if word_count < 100 or word_count > 10000:
+    # Skip empty, nearly empty pages or too large (suspicious & possibly corrupted)
+    if word_count < 100 or word_count > 100000:
         return
 
     # Update per-page word count
