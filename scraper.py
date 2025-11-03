@@ -38,7 +38,7 @@ def extract_next_links(url, resp):
         return []
     
     # Skip pages that are too large (suspicious)
-    if len(resp.raw_response.content) > 10000:
+    if len(resp.raw_response.content) > 10000000:
         return []
     
     # Skip if not HTML content
